@@ -2,7 +2,8 @@ import { defineConfig } from "vite";
 import util from "util";
 import { exec as execSync } from "child_process";
 import fs from "fs/promises";
-import path from "path";
+import wasm from "vite-plugin-wasm";
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 const exec = util.promisify(execSync);
 
 async function replaceAsync(str, regex, asyncReplacer) {
@@ -63,5 +64,16 @@ const syntaxHighlightPlugin = () => {
 
 export default defineConfig({
   // Your configuration goes here
-  plugins: [syntaxHighlightPlugin()],
+  plugins: [
+    new NodeGlobalsPolyfillPlugin({
+      buffer: true,
+    }),
+    syntaxHighlightPlugin(),
+    wasm(),
+  ],
+  server: {
+    mimeTypes: {
+      "application/wasm": ["wasm"],
+    },
+  },
 });
