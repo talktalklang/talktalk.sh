@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Cascadia Code";
+  src: local("Cascadia Code"), url("./assets/fonts/CascadiaCode.ttf");
+}
+
+@font-face {
+  font-family: "Cascadia Code Italic";
+  src: local("Cascadia Code Italic"),
+    url("./assets/fonts/CascadiaCodeItalic.ttf");
+}
+
+pre {
+  tab-size: 2;
+}
+
+.keyword {
+  color: #e6006f;
+}
+
+.type {
+  color: #038282;
+}
+
+.call {
+  color: #455570;
+}
+
+.string {
+  color: #dd257e;
+}
+
+.number {
+  color: #937100;
+}
+
+.comment {
+  color: #757575;
+}
+
+.property {
+  color: #238282;
+}
+
+.dotAccess {
+  color: #0d8484;
+}
+
+.preprocessing {
+  color: #f19c79;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre {
+    color: #fff;
+  }
+
+  .keyword {
+    color: #ff007b;
+  }
+
+  .type {
+    color: #23e8e8;
+  }
+
+  .call {
+    color: #43bccd;
+  }
+
+  .string {
+    color: #ff3798;
+  }
+
+  .number {
+    color: #ffc914;
+  }
+
+  .comment {
+    color: #848484;
+  }
+
+  .property {
+    color: #51f5f5;
+  }
+
+  .dotAccess {
+    color: #43c4c4;
+  }
+
+  .preprocessing {
+    color: #f19c79;
+  }
+}
