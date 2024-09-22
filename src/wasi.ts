@@ -14,7 +14,7 @@ async function initTalk(): Promise<WebAssembly.Module> {
     await init();
 
     // Load the .wasm from the public dir
-    const talkresponse = await fetch("/talk.wasm");
+    const talkresponse = await fetch("/talk.wasm.gz");
     const talkbuffer = await talkresponse.arrayBuffer();
     const talkbin = new Uint8Array(talkbuffer);
     const talklowered = await lowerI64Imports(talkbin);
