@@ -14,9 +14,15 @@ async function initTalk(): Promise<WebAssembly.Module> {
     await init();
 
     // Load the .wasm from the public dir
-    const talkresponse = await fetch("/talk.wasm.gz");
-    const talkbuffer = await talkresponse.arrayBuffer();
-    const talkbin = new Uint8Array(talkbuffer);
+    const talkresponse = await fetch("/talk.wasm.gzip");
+
+    const responseBlob = await talkresponse.blob();
+    const decompressionStream = new DecompressionStream("gzip");
+    const decompressedArrayBuffer = await new Response(
+      responseBlob.stream().pipeThrough(decompressionStream)
+    ).arrayBuffer();
+
+    const talkbin = new Uint8Array(decompressedArrayBuffer);
     const talklowered = await lowerI64Imports(talkbin);
 
     // Compile the WebAssembly module and store it globally
