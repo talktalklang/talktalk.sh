@@ -1,7 +1,6 @@
 import { on } from "delegated-events";
 import { execute } from "./wasi";
 import "./editor";
-
 import "./style.css";
 
 on("click", ".js-run", async function (e) {

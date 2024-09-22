@@ -3,29 +3,34 @@ import { Buffer } from "buffer";
 
 import { lowerI64Imports } from "@wasmer/wasm-transformer";
 import { init, WASI } from "@wasmer/wasi";
-await init();
 
-// Load the .wasm from the public dir
-const talkresponse = await fetch("/talk.wasm");
-const talkbuffer = await talkresponse.arrayBuffer();
-const talkbin = new Uint8Array(talkbuffer);
-const talklowered = await lowerI64Imports(talkbin);
-const talk = await WebAssembly.compile(talklowered);
+// Global variable to store the compiled WebAssembly module
+let talk: WebAssembly.Module | null = null;
 
-let wasi = new WASI({
-  env: {},
-  args: ["talk", "run", "-"],
-});
+// Function to initialize WebAssembly module
+async function initTalk(): Promise<WebAssembly.Module> {
+  if (talk === null) {
+    // Initialize WASI if not done yet
+    await init();
 
-const wasmImportObject = {
-  ...wasi.getImports(talk),
-};
+    // Load the .wasm from the public dir
+    const talkresponse = await fetch("/talk.wasm");
+    const talkbuffer = await talkresponse.arrayBuffer();
+    const talkbin = new Uint8Array(talkbuffer);
+    const talklowered = await lowerI64Imports(talkbin);
 
-const instance = await WebAssembly.instantiate(talk, wasmImportObject);
+    // Compile the WebAssembly module and store it globally
+    talk = await WebAssembly.compile(talklowered);
+  }
+
+  return talk;
+}
 
 export async function execute(
   input: string
 ): Promise<{ stdout: string; stderr: string }> {
+  const talk = await initTalk();
+
   let wasi = new WASI({
     env: {},
     args: ["talk", "run", "-"],
@@ -47,6 +52,8 @@ export async function execute(
 export async function highlight(
   input: string
 ): Promise<{ stdout: string; stderr: string }> {
+  const talk = await initTalk();
+
   let wasi = new WASI({
     env: {},
     args: ["talk", "html", "-"],
