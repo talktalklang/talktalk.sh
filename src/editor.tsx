@@ -5,17 +5,29 @@ import Editor from "react-simple-code-editor";
 import { highlight, execute } from "./wasi";
 
 function App({ initial }: { initial: string }) {
+  // Get the output element so we can scroll to it
   const outputRef = useRef<HTMLDivElement>(null);
+
+  // Whether or not we're executing
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [code, setCode] = useState(initial.trimEnd());
+
+  // The code being edited
+  const [code, setCode] = useState(initial);
+
+  // The syntax highlighted output
   const [highlightedCode, setHighlightedCode] = useState(code);
+
+  // The result output of the script
   const [output, setOutput] = useState<string | null>(null);
 
   // Effect to highlight code when `code` changes
   useEffect(() => {
     async function updateHighlightedCode() {
+      console.log("code", JSON.stringify(code));
       const result = await highlight(code); // Await the async highlight function
-      setHighlightedCode((result.stdout || code).trimEnd()); // Update the highlighted code in state
+
+      console.log("highlighted", JSON.stringify(result.stdout));
+      setHighlightedCode(result.stdout); // Update the highlighted code in state
     }
 
     updateHighlightedCode();
@@ -26,7 +38,7 @@ function App({ initial }: { initial: string }) {
     try {
       setIsRunning(true);
       const result = await execute(code); // Execute the code asynchronously
-      setOutput(result.stdout.trimEnd()); // Set the output to display the result
+      setOutput(result.stdout); // Set the output to display the result
 
       setTimeout(() => {
         setIsRunning(false);
@@ -34,7 +46,7 @@ function App({ initial }: { initial: string }) {
           behavior: "smooth",
           block: "nearest",
         });
-      });
+      }, 10);
     } catch (error) {
       setOutput("Execution failed.");
     }

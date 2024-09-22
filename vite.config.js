@@ -1,11 +1,7 @@
 import { defineConfig } from "vite";
-import util from "util";
-import { exec as execSync } from "child_process";
 import fs from "fs/promises";
-import wasm from "vite-plugin-wasm";
 import react from "@vitejs/plugin-react";
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
-const exec = util.promisify(execSync);
 
 async function replaceAsync(str, regex, asyncReplacer) {
   // Find all matches of the regex in the string
@@ -43,21 +39,12 @@ const syntaxHighlightPlugin = () => {
     name: "syntax-highlight",
     transformIndexHtml(html) {
       return replaceAsync(html, /CODE\((.*?)\.talk\)/g, async (_, name) => {
-        console.log("replacing " + name);
-
-        // const { stdout } = await exec(
-        //   "/Users/nakajima/apps/talktalk/.build/debug/talk html " +
-        //     "src/code/" +
-        //     name +
-        //     ".talk"
-        // );
-
         const content = await fs.readFile(
           "src/code/" + name + ".talk",
           "utf-8"
         );
 
-        return content.trimEnd();
+        return content;
       });
     },
   };
@@ -71,11 +58,5 @@ export default defineConfig({
       buffer: true,
     }),
     syntaxHighlightPlugin(),
-    wasm(),
   ],
-  server: {
-    mimeTypes: {
-      "application/wasm": ["wasm"],
-    },
-  },
 });

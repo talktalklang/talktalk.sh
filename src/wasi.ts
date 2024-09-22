@@ -52,6 +52,10 @@ export async function execute(
   let stdout = wasi.getStdoutString();
   let stderr = wasi.getStderrString();
 
+  if (stderr) {
+    console.error(stderr);
+  }
+
   return { stdout, stderr };
 }
 
@@ -70,10 +74,14 @@ export async function highlight(
   };
 
   const instance = await WebAssembly.instantiate(talk, wasmImportObject);
-  wasi.setStdinString(input);
+  wasi.setStdinString(input + "\n");
   wasi.start(instance);
   let stdout = wasi.getStdoutString();
   let stderr = wasi.getStderrString();
+
+  if (stderr) {
+    console.error(stderr);
+  }
 
   return { stdout, stderr };
 }
