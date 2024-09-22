@@ -35,6 +35,8 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install npm
         run: npm install
+      - name: Download latest talktalk wasm
+        run: curl -o public/talk.wasm.gzip https://github.com/talktalklang/talktalk/releases/latest/download/TalkTalk_wasm.gzip
       - name: Build
         run: npm run build
       - name: Upload artifact
