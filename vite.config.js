@@ -45,19 +45,19 @@ const syntaxHighlightPlugin = () => {
       return replaceAsync(html, /CODE\((.*?)\.talk\)/g, async (_, name) => {
         console.log("replacing " + name);
 
-        const { stdout } = await exec(
-          "/Users/nakajima/apps/talktalk/.build/debug/talk html " +
-            "src/code/" +
-            name +
-            ".talk"
-        );
+        // const { stdout } = await exec(
+        //   "/Users/nakajima/apps/talktalk/.build/debug/talk html " +
+        //     "src/code/" +
+        //     name +
+        //     ".talk"
+        // );
 
         const content = await fs.readFile(
           "src/code/" + name + ".talk",
           "utf-8"
         );
 
-        return stdout.trimEnd();
+        return content.trimEnd();
       });
     },
   };
@@ -70,7 +70,7 @@ export default defineConfig({
     new NodeGlobalsPolyfillPlugin({
       buffer: true,
     }),
-    // syntaxHighlightPlugin(),
+    syntaxHighlightPlugin(),
     wasm(),
   ],
   server: {
