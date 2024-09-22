@@ -7,7 +7,7 @@ func fib(n) {
 var i = 0
 
 // Calculate some numbers
-while i < 35 {
+while i < 15 {
 	print(fib(i))
 	i = i + 1
 }

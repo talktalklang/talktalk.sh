@@ -3,6 +3,7 @@ import util from "util";
 import { exec as execSync } from "child_process";
 import fs from "fs/promises";
 import wasm from "vite-plugin-wasm";
+import react from "@vitejs/plugin-react";
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 const exec = util.promisify(execSync);
 
@@ -56,7 +57,7 @@ const syntaxHighlightPlugin = () => {
           "utf-8"
         );
 
-        return stdout;
+        return stdout.trimEnd();
       });
     },
   };
@@ -65,6 +66,7 @@ const syntaxHighlightPlugin = () => {
 export default defineConfig({
   // Your configuration goes here
   plugins: [
+    react(),
     new NodeGlobalsPolyfillPlugin({
       buffer: true,
     }),

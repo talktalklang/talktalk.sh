@@ -11,6 +11,9 @@
   "devDependencies": {
     "@bjorn3/browser_wasi_shim": "^0.3.0",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@types/node": "^22.5.5",
+    "@types/react": "^18.3.8",
+    "@types/react-dom": "^18.3.0",
     "@wasmer/wasi": "^1.2.2",
     "@wasmer/wasm-transformer": "^0.12.0",
     "autoprefixer": "^10.4.20",
@@ -21,5 +24,11 @@
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
     "vite-plugin-wasm": "^3.3.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "delegated-events": "^1.1.2",
+    "react": "^18.3.1",
+    "react-simple-code-editor": "^0.14.1"
   }
 }

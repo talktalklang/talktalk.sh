@@ -11,3 +11,5 @@ struct Person: Greetable {
 func greet(greetable: Greetable) {
 	print(greetable.greet("pat"))
 }
+
+greet(Person())
