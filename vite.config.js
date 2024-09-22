@@ -70,7 +70,7 @@ export default defineConfig({
     new NodeGlobalsPolyfillPlugin({
       buffer: true,
     }),
-    syntaxHighlightPlugin(),
+    // syntaxHighlightPlugin(),
     wasm(),
   ],
   server: {
