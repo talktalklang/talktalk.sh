@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import classnames from "classnames";
 import { createRoot } from "react-dom/client";
 import Editor from "react-simple-code-editor";
 import { highlight, execute } from "./wasi";
 
 function App({ initial }: { initial: string }) {
   const outputRef = useRef<HTMLDivElement>(null);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
   const [code, setCode] = useState(initial.trimEnd());
   const [highlightedCode, setHighlightedCode] = useState(code);
   const [output, setOutput] = useState<string | null>(null);
@@ -22,10 +24,12 @@ function App({ initial }: { initial: string }) {
   // Make the run function asynchronous
   async function run() {
     try {
+      setIsRunning(true);
       const result = await execute(code); // Execute the code asynchronously
       setOutput(result.stdout.trimEnd()); // Set the output to display the result
 
       setTimeout(() => {
+        setIsRunning(false);
         outputRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
@@ -39,7 +43,13 @@ function App({ initial }: { initial: string }) {
   return (
     <div className="col-span-2">
       <div className="relative font-mono shadow-sm bg-zinc-100 dark:bg-gray-900 p-3">
-        <button className="px-3 py-1 bg-slate-800 float-right" onClick={run}>
+        <button
+          className={classnames("px-3 py-1 bg-slate-800 float-right", {
+            "opacity-50": isRunning,
+          })}
+          onClick={run}
+          disabled={isRunning}
+        >
           Run
         </button>
         <Editor

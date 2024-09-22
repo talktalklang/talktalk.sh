@@ -2,6 +2,10 @@ import { on } from "delegated-events";
 import { execute } from "./wasi";
 import "./editor";
 import "./style.css";
+import smoothscroll from "smoothscroll-polyfill";
+
+// kick off the polyfill!
+smoothscroll.polyfill();
 
 on("click", ".js-run", async function (e) {
   e.preventDefault();
