@@ -23,10 +23,8 @@ function App({ initial }: { initial: string }) {
   // Effect to highlight code when `code` changes
   useEffect(() => {
     async function updateHighlightedCode() {
-      console.log("code", JSON.stringify(code));
       const result = await highlight(code); // Await the async highlight function
 
-      console.log("highlighted", JSON.stringify(result.stdout));
       setHighlightedCode(result.stdout); // Update the highlighted code in state
     }
 
