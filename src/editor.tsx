@@ -44,9 +44,12 @@ function App({ initial }: { initial: string }) {
     <div className="col-span-2">
       <div className="relative font-mono shadow-sm bg-zinc-100 dark:bg-gray-900 p-3">
         <button
-          className={classnames("px-3 py-1 bg-slate-800 float-right", {
-            "opacity-50": isRunning,
-          })}
+          className={classnames(
+            "px-3 py-1 bg-yellow-100 dark:bg-slate-800 float-right",
+            {
+              "opacity-50": isRunning,
+            }
+          )}
           onClick={run}
           disabled={isRunning}
         >
@@ -61,7 +64,10 @@ function App({ initial }: { initial: string }) {
         />
       </div>
       {output && (
-        <div ref={outputRef} className="p-3 bg-gray-800 font-mono">
+        <div
+          ref={outputRef}
+          className="p-3 dark:bg-gray-800 bg-slate-100 font-mono"
+        >
           <h3 className="text-gray-500">Output</h3>
           <pre>{output}</pre>
         </div>
